@@ -34,8 +34,8 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <Link to={`/anecdotes/${anecdote.id}`}>
-          <li key={anecdote.id}>{anecdote.content}</li>
+        <Link key={anecdote.id} to={`/anecdotes/${anecdote.id}`}>
+          <li>{anecdote.content}</li>
         </Link>
       ))}
     </ul>
@@ -109,10 +109,17 @@ const CreateNew = (props) => {
     history.push('/');
   };
 
+  const handleReset = (e) => {
+    e.preventDefault();
+    content.onReset();
+    author.onReset();
+    info.onReset();
+  };
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
           <input {...content} />
@@ -126,6 +133,7 @@ const CreateNew = (props) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button type="reset">reset</button>
       </form>
     </div>
   );
