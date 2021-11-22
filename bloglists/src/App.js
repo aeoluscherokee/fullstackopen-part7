@@ -6,22 +6,18 @@ import CreateNewBlog from './components/CreateNewBlog';
 import Togglable from './components/Togglable';
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotification } from './reducers/notificationReducer';
+import { getAllBlogs } from './reducers/blogReducer';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector(({ blogs }) => blogs);
   const userData = useSelector(({ user }) => user);
   const blogFormRef = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const getBlogs = async () => {
-      const blogs = await blogService.getAll();
-      const sortedBlogs = blogService.sortBlogs(blogs);
-      setBlogs(sortedBlogs);
-    };
-    getBlogs();
+    dispatch(getAllBlogs());
   }, []);
 
-  const dispatch = useDispatch();
   const addBlog = async (newBlog) => {
     try {
       const response = await blogService.createNewBlog(newBlog, userData.token);
