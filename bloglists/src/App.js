@@ -16,29 +16,6 @@ const App = () => {
     dispatch(getAllBlogs());
   }, []);
 
-  const addBlog = async (newBlog) => {
-    try {
-      const response = await blogService.createNewBlog(newBlog, userData.token);
-      dispatch(createNewBlog(response));
-      dispatch(
-        showNotification(
-          {
-            style: 'success',
-            message: `a new blog ${response.title} by ${response.author} added`,
-          },
-          3
-        )
-      );
-    } catch (error) {
-      dispatch(
-        showNotification(
-          { style: 'error', message: error.response.data.error },
-          3
-        )
-      );
-    }
-  };
-
   const handleUpdateLike = async (blog) => {
     const updatedBlog = {
       user: blog.user.id,
@@ -96,7 +73,7 @@ const App = () => {
   return (
     <>
       <LogIn>
-        <CreateNewBlog addBlog={addBlog} />
+        <CreateNewBlog />
         {blogs.map((blog) => (
           <Blog
             key={blog.id}
