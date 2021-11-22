@@ -12,9 +12,4 @@ const LikeButton = ({ blog, updateLike }) => {
   );
 };
 
-LikeButton.propTypes = {
-  blog: PropTypes.object.isRequired,
-  updateLike: PropTypes.func.isRequired,
-};
-
 export default LikeButton;
