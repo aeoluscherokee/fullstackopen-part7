@@ -14,7 +14,14 @@ module.exports = {
   },
   plugins: ['react', 'jest'],
   rules: {
-    indent: ['error', 2],
+    indent: [
+      'error',
+      2,
+      {
+        SwitchCase: 1,
+        ignoredNodes: ['ConditionalExpression'],
+      },
+    ],
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     eqeqeq: 'error',
