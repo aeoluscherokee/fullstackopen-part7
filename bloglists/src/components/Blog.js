@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteBlog } from '../reducers/blogReducer';
+import { deleteBlog, updateLikes } from '../reducers/blogReducer';
 import { showNotification } from '../reducers/notificationReducer';
 import blogService from '../services/blogs';
-import LikeButton from './LikeButton';
 
 const Blog = ({ blog }) => {
   const userData = useSelector(({ user }) => user);
@@ -47,6 +46,22 @@ const Blog = ({ blog }) => {
     } else return;
   };
 
+  const handleLike = async () => {
+    const updatedBlog = {
+      user: blog.user.id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+    };
+    try {
+      const response = await blogService.updateLike(blog.id, updatedBlog);
+      dispatch(updateLikes(blog.id, response.likes));
+    } catch (error) {
+      console.log(error.response.data.error);
+    }
+  };
+
   return (
     <div style={blogStyle}>
       <div>
@@ -59,7 +74,9 @@ const Blog = ({ blog }) => {
             <p>{blog.url}</p>
             <p>
               likes <span className="likeEl">{blog.likes}</span>
-              <LikeButton blog={blog} />
+              <button className="likeButton" onClick={handleLike}>
+                Like
+              </button>
             </p>
             <p>{blog.user.name}</p>
             {userData.name === blog.user.name ? (
