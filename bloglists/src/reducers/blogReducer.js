@@ -21,4 +21,10 @@ export const getAllBlogs = () => {
   };
 };
 
+export const createNewBlog = (response) => {
+  return async (dispatch) => {
+    dispatch({ type: 'NEW_BLOG', data: response });
+  };
+};
+
 export default blogReducer;
