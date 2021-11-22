@@ -3,7 +3,6 @@ import Blog from './components/Blog';
 import blogService from './services/blogs';
 import LogIn from './components/LogIn';
 import CreateNewBlog from './components/CreateNewBlog';
-import Togglable from './components/Togglable';
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotification } from './reducers/notificationReducer';
 import { getAllBlogs, createNewBlog } from './reducers/blogReducer';
@@ -11,7 +10,6 @@ import { getAllBlogs, createNewBlog } from './reducers/blogReducer';
 const App = () => {
   const blogs = useSelector(({ blogs }) => blogs);
   const userData = useSelector(({ user }) => user);
-  const blogFormRef = useRef();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,7 +29,6 @@ const App = () => {
           3
         )
       );
-      blogFormRef.current.toggleVisibility();
     } catch (error) {
       dispatch(
         showNotification(
@@ -41,7 +38,6 @@ const App = () => {
       );
     }
   };
-  const cancelAddBlog = () => blogFormRef.current.toggleVisibility();
 
   const handleUpdateLike = async (blog) => {
     const updatedBlog = {
@@ -100,9 +96,7 @@ const App = () => {
   return (
     <>
       <LogIn>
-        <Togglable showLabel="create new blog" ref={blogFormRef}>
-          <CreateNewBlog addBlog={addBlog} cancelAddBlog={cancelAddBlog} />
-        </Togglable>
+        <CreateNewBlog addBlog={addBlog} />
         {blogs.map((blog) => (
           <Blog
             key={blog.id}
