@@ -8,6 +8,11 @@ const blogReducer = (state = initialState, action) => {
       return [...state, action.data];
     case 'ALL_BLOGS':
       return action.data;
+    case 'DELETE_BLOG': {
+      const updatedBlogs = state.filter((blog) => blog.id !== action.id);
+      return updatedBlogs;
+    }
+
     default:
       return state;
   }
@@ -24,6 +29,12 @@ export const getAllBlogs = () => {
 export const createNewBlog = (response) => {
   return async (dispatch) => {
     dispatch({ type: 'NEW_BLOG', data: response });
+  };
+};
+
+export const deleteBlog = (id) => {
+  return async (dispatch) => {
+    dispatch({ type: 'DELETE_BLOG', id: id });
   };
 };
 
