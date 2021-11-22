@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import Togglable from './Togglable';
 import blogService from '../services/blogs';
 import { showNotification } from '../reducers/notificationReducer';
@@ -47,11 +46,9 @@ const CreateNewBlog = () => {
     blogFormRef.current.toggleVisibility();
   };
 
-  const cancelAddBlog = () => blogFormRef.current.toggleVisibility();
-
   const handleOnCancel = async (e) => {
     e.preventDefault();
-    cancelAddBlog();
+    blogFormRef.current.toggleVisibility();
   };
 
   const handleOnChange = (e) => {
