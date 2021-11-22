@@ -4,8 +4,7 @@ import blogService from './services/blogs';
 import LogIn from './components/LogIn';
 import CreateNewBlog from './components/CreateNewBlog';
 import { useDispatch, useSelector } from 'react-redux';
-import { showNotification } from './reducers/notificationReducer';
-import { getAllBlogs, createNewBlog } from './reducers/blogReducer';
+import { getAllBlogs } from './reducers/blogReducer';
 
 const App = () => {
   const blogs = useSelector(({ blogs }) => blogs);
@@ -37,51 +36,12 @@ const App = () => {
       console.log(error.response.data.error);
     }
   };
-
-  const handleDelete = async (id, token, title) => {
-    if (window.confirm(`Do you want to delete ${title}?`)) {
-      try {
-        await blogService.deleteBlog(id, token);
-        const updatedBlogs = blogs.filter((blog) => blog.id !== id);
-        setBlogs(updatedBlogs);
-        dispatch(
-          showNotification(
-            {
-              style: 'success',
-              message: `a blog ${title} has been deleted`,
-            },
-            3
-          )
-        );
-      } catch (error) {
-        const updatedBlogs = blogs.filter((blog) => blog.id !== id);
-        setBlogs(updatedBlogs);
-
-        dispatch(
-          showNotification(
-            {
-              style: 'error',
-              message: `a blog ${title} is not existed`,
-            },
-            3
-          )
-        );
-      }
-    } else return;
-  };
-
   return (
     <>
       <LogIn>
         <CreateNewBlog />
         {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            updateLike={handleUpdateLike}
-            deleteBlog={handleDelete}
-            user={userData}
-          />
+          <Blog key={blog.id} blog={blog} />
         ))}
       </LogIn>
     </>
