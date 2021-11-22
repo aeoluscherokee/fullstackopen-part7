@@ -4,13 +4,12 @@ import Togglable from './Togglable';
 import blogService from '../services/blogs';
 import { showNotification } from '../reducers/notificationReducer';
 import { createNewBlog } from '../reducers/blogReducer';
+import { useField } from './../hooks';
 
 const CreateNewBlog = () => {
-  const [newBlog, setNewBlog] = useState({
-    title: '',
-    author: '',
-    url: '',
-  });
+  const title = useField('text');
+  const author = useField('text');
+  const url = useField('text');
 
   const userData = useSelector(({ user }) => user);
   const dispatch = useDispatch();
@@ -19,8 +18,16 @@ const CreateNewBlog = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     try {
+      const newBlog = {
+        title: title.value,
+        author: author.value,
+        url: url.value,
+      };
       const response = await blogService.createNewBlog(newBlog, userData.token);
       dispatch(createNewBlog(response));
+      title.onReset();
+      author.onReset();
+      url.onReset();
       dispatch(
         showNotification(
           {
@@ -38,11 +45,6 @@ const CreateNewBlog = () => {
         )
       );
     }
-    setNewBlog({
-      title: '',
-      author: '',
-      url: '',
-    });
     blogFormRef.current.toggleVisibility();
   };
 
@@ -51,25 +53,19 @@ const CreateNewBlog = () => {
     blogFormRef.current.toggleVisibility();
   };
 
-  const handleOnChange = (e) => {
-    setNewBlog((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
-  };
-
   return (
     <Togglable showLabel="create new blog" ref={blogFormRef}>
       <div id="createForm">
         <h2>create new</h2>
         <form onSubmit={handleOnSubmit}>
           title
-          <input id="title" name="title" onChange={handleOnChange}></input>
+          <input id="title" name="title" {...title}></input>
           <br />
           author
-          <input id="author" name="author" onChange={handleOnChange}></input>
+          <input id="author" name="author" {...author}></input>
           <br />
           url
-          <input id="url" name="url" onChange={handleOnChange}></input>
+          <input id="url" name="url" {...url}></input>
           <br />
           <button type="submit">submit</button>
           <button onClick={handleOnCancel}>cancel</button>
