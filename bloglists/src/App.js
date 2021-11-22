@@ -6,6 +6,8 @@ import Notification from './components/Notification';
 import LogIn from './components/LogIn';
 import CreateNewBlog from './components/CreateNewBlog';
 import Togglable from './components/Togglable';
+import { useDispatch } from 'react-redux';
+import { showNotification } from './reducers/notificationReducer';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -15,7 +17,6 @@ const App = () => {
     username: '',
     name: '',
   });
-  const [notification, setNotification] = useState({ type: '', message: '' });
   const blogFormRef = useRef();
 
   useEffect(() => {
@@ -26,6 +27,8 @@ const App = () => {
     };
     getBlogs();
   }, []);
+
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -33,8 +36,12 @@ const App = () => {
       setUserData(response);
       setLoginData({ username: '', password: '' });
     } catch (error) {
-      setNotification({ type: 'error', message: error.response.data.error });
-      setTimeout(() => setNotification({ type: '', message: '' }), 3000);
+      dispatch(
+        showNotification(
+          { style: 'error', message: error.response.data.error },
+          3
+        )
+      );
       setLoginData({ username: '', password: '' });
     }
   };
@@ -44,15 +51,23 @@ const App = () => {
       const updatedBlogs = [...blogs, response];
       const sortedBlogs = blogService.sortBlogs(updatedBlogs);
       setBlogs(sortedBlogs);
-      setNotification({
-        type: 'success',
-        message: `a new blog ${response.title} by ${response.author} added`,
-      });
-      setTimeout(() => setNotification({ type: '', message: '' }), 3000);
+      dispatch(
+        showNotification(
+          {
+            style: 'success',
+            message: `a new blog ${response.title} by ${response.author} added`,
+          },
+          3
+        )
+      );
       blogFormRef.current.toggleVisibility();
     } catch (error) {
-      setNotification({ type: 'error', message: error.response.data.error });
-      setTimeout(() => setNotification({ type: '', message: '' }), 3000);
+      dispatch(
+        showNotification(
+          { style: 'error', message: error.response.data.error },
+          3
+        )
+      );
     }
   };
   const cancelAddBlog = () => blogFormRef.current.toggleVisibility();
@@ -90,21 +105,28 @@ const App = () => {
         await blogService.deleteBlog(id, token);
         const updatedBlogs = blogs.filter((blog) => blog.id !== id);
         setBlogs(updatedBlogs);
-        setNotification({
-          type: 'success',
-          message: `a blog ${title} has been deleted`,
-        });
-        setTimeout(() => setNotification({ type: '', message: '' }), 3000);
+        dispatch(
+          showNotification(
+            {
+              style: 'success',
+              message: `a blog ${title} has been deleted`,
+            },
+            3
+          )
+        );
       } catch (error) {
-        if (error.response.status === 404) {
-          const updatedBlogs = blogs.filter((blog) => blog.id !== id);
-          setBlogs(updatedBlogs);
-        } else return;
-        setNotification({
-          type: 'error',
-          message: error.response.data.error,
-        });
-        setTimeout(() => setNotification({ type: '', message: '' }), 3000);
+        const updatedBlogs = blogs.filter((blog) => blog.id !== id);
+        setBlogs(updatedBlogs);
+
+        dispatch(
+          showNotification(
+            {
+              style: 'error',
+              message: `a blog ${title}is not existed`,
+            },
+            3
+          )
+        );
       }
     } else return;
   };
@@ -140,7 +162,6 @@ const App = () => {
         </div>
       ) : (
         <LogIn
-          notification={notification}
           handleSubmit={handleSubmit}
           handleOnChange={handleOnChange}
           loginData={loginData}
