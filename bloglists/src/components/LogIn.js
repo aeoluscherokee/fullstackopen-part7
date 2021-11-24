@@ -9,7 +9,7 @@ import userService from '../services/users';
 const Login = (props) => {
   const username = useField('text');
   const password = useField('password');
-  const userData = useSelector(({ user }) => user);
+  const userData = useSelector(({ user }) => user.currentUser);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
