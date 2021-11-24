@@ -29,6 +29,20 @@ const deleteBlog = async (id, token) => {
   return request.data;
 };
 
+const addComment = async (blogId, comment, token) => {
+  const request = await axios.post(`${baseUrl}/${blogId}/comments`, comment, {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+  });
+  return request.data;
+};
+
+const getComments = async () => {
+  const request = await axios.get(`${baseUrl}/comments`);
+  return request.data;
+};
+
 const sortBlogs = (blogs) => {
   const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
   return sortedBlogs;
@@ -40,6 +54,8 @@ const blogService = {
   updateLike: updateLike,
   sortBlogs: sortBlogs,
   deleteBlog: deleteBlog,
+  addComment: addComment,
+  getComments: getComments,
 };
 
 export default blogService;
