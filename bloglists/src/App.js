@@ -4,6 +4,7 @@ import Blog from './components/Blog';
 import LogIn from './components/LogIn';
 import Users from './components/Users';
 import UserView from './components/UserView';
+import BlogView from './components/BlogView';
 import CreateNewBlog from './components/CreateNewBlog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBlogs } from './reducers/blogReducer';
@@ -36,6 +37,7 @@ const App = () => {
                 </div>
               }
             ></Route>
+            <Route path="/blogs/:id" element={<BlogView />}></Route>
           </Routes>
         </LogIn>
       </Router>
