@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const UserDetail = () => {
+const UserView = () => {
   const id = useParams().id;
   const user = useSelector(({ user }) =>
     user.allUsers.find((el) => el.id === id)
@@ -20,4 +20,4 @@ const UserDetail = () => {
   );
 };
 
-export default UserDetail;
+export default UserView;
