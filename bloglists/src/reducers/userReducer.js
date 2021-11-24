@@ -1,3 +1,5 @@
+import userService from '../services/users';
+
 const initialState = {
   allUsers: [],
   currentUser: {
@@ -40,6 +42,16 @@ export const logout = () => {
   return async (dispatch) => {
     dispatch({
       type: 'LOGOUT',
+    });
+  };
+};
+
+export const getAllUsers = () => {
+  return async (dispatch) => {
+    const response = await userService.getAll();
+    dispatch({
+      type: 'ALL_USERS',
+      data: response,
     });
   };
 };
