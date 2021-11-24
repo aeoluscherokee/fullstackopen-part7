@@ -1,19 +1,27 @@
 const initialState = {
-  token: '',
-  username: '',
-  name: '',
+  allUsers: [],
+  currentUser: {
+    token: '',
+    username: '',
+    name: '',
+  },
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN':
-      return action.userData;
+      return { ...state, currentUser: action.userData };
     case 'LOGOUT':
       return {
-        token: '',
-        username: '',
-        name: '',
+        ...state,
+        currentUser: {
+          token: '',
+          username: '',
+          name: '',
+        },
       };
+    case 'ALL_USERS':
+      return { ...state, allUsers: action.data };
     default:
       return state;
   }
