@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Link, Routes, Route } from 'react-router-dom';
 import Blog from './components/Blog';
 import LogIn from './components/LogIn';
 import Users from './components/Users';
-import UserDetail from './components/UserDetail';
+import UserView from './components/UserView';
 import CreateNewBlog from './components/CreateNewBlog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBlogs } from './reducers/blogReducer';
@@ -24,7 +24,7 @@ const App = () => {
         <LogIn>
           <Routes>
             <Route path="/users" element={<Users />}></Route>
-            <Route path="/users/:id" element={<UserDetail />}></Route>
+            <Route path="/users/:id" element={<UserView />}></Route>
             <Route
               path="/"
               element={
