@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Blog from './components/Blog';
 import LogIn from './components/LogIn';
 import CreateNewBlog from './components/CreateNewBlog';
@@ -7,7 +7,6 @@ import { getAllBlogs } from './reducers/blogReducer';
 
 const App = () => {
   const blogs = useSelector(({ blogs }) => blogs);
-  const userData = useSelector(({ user }) => user);
   const dispatch = useDispatch();
 
   useEffect(() => {
