@@ -6,8 +6,14 @@ const logIn = async (loginData) => {
   return request.data;
 };
 
+const getAll = async () => {
+  const request = await axios.get(baseUrl);
+  return request.data;
+};
+
 const userService = {
   logIn: logIn,
+  getAll: getAll,
 };
 
 export default userService;
