@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteBlog, updateLikes } from '../reducers/blogReducer';
 import { showNotification } from '../reducers/notificationReducer';
 import blogService from '../services/blogs';
+import Comment from './Comment';
 
 const BlogView = () => {
   const id = useParams().id;
@@ -72,6 +73,7 @@ const BlogView = () => {
       {userData.name === blog.user.name ? (
         <button onClick={handleDelete}>remove</button>
       ) : null}
+      <Comment blogId={blog.id} />
     </>
   );
 };
